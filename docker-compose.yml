@@ -48,14 +48,14 @@ services:
       nofile:
         soft: 65536
         hard: 65536
-      # ports:
-      # - "9200:9200"
+    ports:
+      - "9200:9200"
     healthcheck:
-      test: ["CMD", "curl","-s" ,"-f", "http://elastic:elastic1q2w3e@localhost:9200/_cat/health"]
+      test: [ "CMD", "curl","-s" ,"-f", "http://elastic:elastic1q2w3e@localhost:9200/_cat/health" ]
     restart: always
 
   ## An analyzer instance for main functionality, don't forget to use the same storage settings (either MinIO, or filesystem) for analyzer_train
-  analyzer: 
+  analyzer:
     image: reportportal/service-auto-analyzer:5.7.4
     environment:
       LOGGING_LEVEL: info
@@ -93,9 +93,9 @@ services:
       rabbitmq:
         condition: service_healthy
     restart: always
- 
+
   ## Metrics service for analyzing how analyzer is working and manage retrained models
-  metrics-gatherer: 
+  metrics-gatherer:
     image: reportportal/service-metrics-gatherer:5.7.3
     environment:
       LOGGING_LEVEL: info
@@ -143,8 +143,8 @@ services:
       ## For windows host
       # - postgres:/var/lib/postgresql/data
     ## If you need to access the DB locally. Could be a security risk to expose DB.
-    # ports:
-    #   - "5432:5432"
+    ports:
+      - "5432:5432"
     command:
       -c checkpoint_completion_target=0.9
       -c work_mem=96MB
@@ -165,7 +165,7 @@ services:
     #  -c effective_cache_size=12GB
     #  -c maintenance_work_mem=1GB
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER"]
+      test: [ "CMD-SHELL", "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER" ]
       interval: 10s
       timeout: 120s
       retries: 10
@@ -173,21 +173,21 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.7.16-management
-    # ports:
-    #   - "5672:5672"
-    #   - "15672:15672"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: "rabbitmq"
       RABBITMQ_DEFAULT_PASS: "rabbitmq"
     healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
+      test: [ "CMD", "rabbitmqctl", "status" ]
       retries: 5
     restart: always
 
   uat:
     image: reportportal/service-authorization:5.7.4
-    # ports:
-    #   - "9999:9999"
+    ports:
+      - "9999:9999"
     environment:
       RP_DB_HOST: ${DB_HOST}
       RP_DB_USER: ${DATABASE_USER}
@@ -220,11 +220,11 @@ services:
       - LB_URL=http://gateway:8081
       - TRAEFIK_V2_MODE=true
     labels:
-        - "traefik.http.routers.index.rule=PathPrefix(`/`)"
-        - "traefik.http.routers.index.service=index"
-        - "traefik.http.services.index.loadbalancer.server.port=8080"
-        - "traefik.http.services.index.loadbalancer.server.scheme=http"
-        - "traefik.expose=true"
+      - "traefik.http.routers.index.rule=PathPrefix(`/`)"
+      - "traefik.http.routers.index.service=index"
+      - "traefik.http.services.index.loadbalancer.server.port=8080"
+      - "traefik.http.services.index.loadbalancer.server.scheme=http"
+      - "traefik.expose=true"
     restart: always
 
   api:
@@ -266,7 +266,7 @@ services:
       - "traefik.http.services.api.loadbalancer.server.scheme=http"
       - "traefik.expose=true"
     restart: always
-    
+
   jobs:
     image: reportportal/service-jobs:5.7.4
     depends_on:
@@ -281,7 +281,7 @@ services:
       ## Ref: https://reportportal.io/blog/double-entry-in-5.7.2
       RP_ELASTICSEARCH_HOST: http://elasticsearch:9200
       RP_ELASTICSEARCH_USERNAME: elastic
-      RP_ELASTICSEARCH_PASSWORD:  elastic1q2w3e
+      RP_ELASTICSEARCH_PASSWORD: elastic1q2w3e
       RP_DB_HOST: ${DB_HOST}
       RP_DB_USER: ${DATABASE_USER}
       RP_DB_PASS: ${DATABASE_PASSWORD}
@@ -305,13 +305,13 @@ services:
       RP_PROCESSING_LOG_MAXBATCHTIMEOUT: 6000
       RP_AMQP_MAXLOGCONSUMER: 1
     labels:
-    - traefik.http.middlewares.jobs-strip-prefix.stripprefix.prefixes=/jobs
-    - traefik.http.routers.jobs.middlewares=jobs-strip-prefix@docker
-    - traefik.http.routers.jobs.rule=PathPrefix(`/jobs`)
-    - traefik.http.routers.jobs.service=jobs
-    - traefik.http.services.jobs.loadbalancer.server.port=8686
-    - traefik.http.services.jobs.loadbalancer.server.scheme=http
-    - traefik.expose=true
+      - traefik.http.middlewares.jobs-strip-prefix.stripprefix.prefixes=/jobs
+      - traefik.http.routers.jobs.middlewares=jobs-strip-prefix@docker
+      - traefik.http.routers.jobs.rule=PathPrefix(`/jobs`)
+      - traefik.http.routers.jobs.service=jobs
+      - traefik.http.services.jobs.loadbalancer.server.port=8686
+      - traefik.http.services.jobs.loadbalancer.server.scheme=http
+      - traefik.expose=true
     restart: always
 
   ui:
@@ -330,11 +330,11 @@ services:
 
   minio:
     image: minio/minio:RELEASE.2020-10-27T04-03-55Z
-    #ports:
-    #  - '9000:9000'
+    ports:
+      - '9000:9000'
     volumes:
       ## For unix host
-      - ./data/storage:/data 
+      - ./data/storage:/data
       ## For windows host
       # - minio:/data
     environment:
@@ -342,14 +342,14 @@ services:
       MINIO_SECRET_KEY: minio123
     command: server /data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 30s
       timeout: 20s
       retries: 3
     restart: always
 
-## Docker volume for Windows host
-# volumes:
-#   postgres:
-#   minio:
+  ## Docker volume for Windows host
+volumes:
+  postgres:
+  minio:
 
