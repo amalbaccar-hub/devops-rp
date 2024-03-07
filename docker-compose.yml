@@ -224,8 +224,7 @@ services:
       - RP_DB_USER=${DATABASE_USER}
       - RP_DB_PASS=${DATABASE_PASSWORD}
       - RP_DB_NAME=${DATABASE_NAME}
-      - RP_AMQP_ADDRESSES=amqp://rabbitmq:rabbitmq@rabbitmq:5672
-      - RP_AMQP_API-ADDRESSES=http://rabbitmq:rabbitmq@rabbitmq:5672/api #RabbitMQ management address
+      - RP_AMQP_ADDRESSES=amqp://rabbitmq:rabbitmq@rabbitmq:5672      
       - RP_AMQP_QUEUES=20
       - RP_AMQP_USER=rabbitmq
       - RP_AMQP_PASS=rabbitmq
