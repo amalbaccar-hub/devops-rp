@@ -193,6 +193,12 @@ services:
       RP_DB_USER: ${DATABASE_USER}
       RP_DB_PASS: ${DATABASE_PASSWORD}
       RP_DB_NAME: ${DATABASE_NAME}
+      RP_AMQP_HOST: rabbitmq
+      RP_AMQP_PORT: 5672
+      RP_AMQP_USER: rabbitmq
+      RP_AMQP_PASS: rabbitmq
+      RP_AMQP_APIUSER: rabbitmq
+      RP_AMQP_APIPASS: rabbitmq
       RP_BINARYSTORE_TYPE: minio
       RP_BINARYSTORE_MINIO_ENDPOINT: http://minio:9000
       RP_BINARYSTORE_MINIO_ACCESSKEY: minio
@@ -246,6 +252,9 @@ services:
       RP_DB_NAME: ${DATABASE_NAME}
       RP_AMQP_ADDRESSES: amqp://rabbitmq:rabbitmq@rabbitmq:5672
       RP_AMQP_QUEUES: 20
+      RP_AMPQ_QUEUESPERPOD: 10
+      RP_AMQP_HOST: rabbitmq
+      RP_AMQP_PORT: 5672
       RP_AMQP_USER: rabbitmq
       RP_AMQP_PASS: rabbitmq
       RP_AMQP_APIUSER: rabbitmq
@@ -288,6 +297,9 @@ services:
       RP_DB_NAME: ${DATABASE_NAME}
       RP_AMQP_ADDRESSES: amqp://rabbitmq:rabbitmq@rabbitmq:5672
       RP_AMQP_QUEUES: 20
+      RP_AMPQ_QUEUESPERPOD: 10
+      RP_AMQP_HOST: rabbitmq
+      RP_AMQP_PORT: 5672
       RP_AMQP_USER: rabbitmq
       RP_AMQP_PASS: rabbitmq
       RP_AMQP_APIUSER: rabbitmq
@@ -330,6 +342,8 @@ services:
       RP_DB_USER: ${DATABASE_USER}
       RP_DB_PASS: ${DATABASE_PASSWORD}
       RP_DB_NAME: ${DATABASE_NAME}
+      RP_AMQP_HOST: rabbitmq
+      RP_AMQP_PORT: 5672
       RP_AMQP_USER: rabbitmq
       RP_AMQP_PASS: rabbitmq
       RP_AMQP_APIUSER: rabbitmq
