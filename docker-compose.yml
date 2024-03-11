@@ -179,6 +179,7 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: "rabbitmq"
       RABBITMQ_DEFAULT_PASS: "rabbitmq"
+      RABBITMQ_DEFAULT_VHOST: "analyzer"
     healthcheck:
       test: ["CMD", "rabbitmqctl", "status"]
       retries: 5
