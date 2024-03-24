@@ -40,7 +40,7 @@ services:
       - "discovery.type=single-node"
       - "logger.level=INFO"
       - "xpack.security.enabled=true"
-      - "ELASTIC_PASSWORD=elastic1q2w3e"
+      - "ELASTIC_PASSWORD=elasticrpisat"
     ulimits:
       memlock:
         soft: -1
@@ -51,7 +51,7 @@ services:
       # ports:
       # - "9200:9200"
     healthcheck:
-      test: ["CMD", "curl","-s" ,"-f", "http://elastic:elastic1q2w3e@localhost:9200/_cat/health"]
+      test: [ "CMD", "curl","-s" ,"-f", "http://elastic:elasticrpisat@localhost:9200/_cat/health" ]
     restart: always
 
   ## An analyzer instance for main functionality, don't forget to use the same storage settings (either MinIO, or filesystem) for analyzer_train
@@ -62,10 +62,10 @@ services:
       AMQP_EXCHANGE_NAME: analyzer-default
       AMQP_VIRTUAL_HOST: analyzer
       AMQP_URL: amqp://rabbitmq:rabbitmq@rabbitmq:5672
-      ES_HOSTS: http://elastic:elastic1q2w3e@elasticsearch:9200
+      ES_HOSTS: http://elastic:elasticrpisat@elasticsearch:9200
       MINIO_SHORT_HOST: minio:9000
       MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
+      MINIO_SECRET_KEY: miniorpisat
     depends_on:
       elasticsearch:
         condition: service_started
@@ -81,10 +81,10 @@ services:
       AMQP_EXCHANGE_NAME: analyzer-default
       AMQP_VIRTUAL_HOST: analyzer
       AMQP_URL: amqp://rabbitmq:rabbitmq@rabbitmq:5672
-      ES_HOSTS: http://elastic:elastic1q2w3e@elasticsearch:9200
+      ES_HOSTS: http://elastic:elasticrpisat@elasticsearch:9200
       MINIO_SHORT_HOST: minio:9000
       MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
+      MINIO_SECRET_KEY: miniorpisat
       INSTANCE_TASK_TYPE: train
       UWSGI_WORKERS: 1
     depends_on:
@@ -101,7 +101,7 @@ services:
       LOGGING_LEVEL: info
       ES_HOST: http://elasticsearch:9200
       ES_USER: elastic
-      ES_PASSWORD: elastic1q2w3e
+      ES_PASSWORD: elasticrpisat
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
       POSTGRES_DB: ${DATABASE_NAME}
@@ -165,7 +165,7 @@ services:
     #  -c effective_cache_size=12GB
     #  -c maintenance_work_mem=1GB
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER"]
+      test: [ "CMD-SHELL", "pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER" ]
       interval: 10s
       timeout: 120s
       retries: 10
@@ -181,7 +181,7 @@ services:
       RABBITMQ_DEFAULT_PASS: "rabbitmq"
       RABBITMQ_DEFAULT_VHOST: "analyzer"
     healthcheck:
-      test: ["CMD", "rabbitmqctl", "status"]
+      test: [ "CMD", "rabbitmqctl", "status" ]
       retries: 5
     restart: always
 
@@ -203,7 +203,7 @@ services:
       RP_BINARYSTORE_TYPE: minio
       RP_BINARYSTORE_MINIO_ENDPOINT: http://minio:9000
       RP_BINARYSTORE_MINIO_ACCESSKEY: minio
-      RP_BINARYSTORE_MINIO_SECRETKEY: minio123
+      RP_BINARYSTORE_MINIO_SECRETKEY: miniorpisat
       RP_SESSION_LIVE: 86400 #in seconds
     labels:
       - "traefik.http.middlewares.uat-strip-prefix.stripprefix.prefixes=/uat"
@@ -263,7 +263,7 @@ services:
       RP_BINARYSTORE_TYPE: minio
       RP_BINARYSTORE_MINIO_ENDPOINT: http://minio:9000
       RP_BINARYSTORE_MINIO_ACCESSKEY: minio
-      RP_BINARYSTORE_MINIO_SECRETKEY: minio123
+      RP_BINARYSTORE_MINIO_SECRETKEY: miniorpisat
       LOGGING_LEVEL_ORG_HIBERNATE_SQL: info
       RP_REQUESTLOGGING: false
       MANAGEMENT_HEALTH_ELASTICSEARCH_ENABLED: false
@@ -277,7 +277,7 @@ services:
       - "traefik.http.services.api.loadbalancer.server.scheme=http"
       - "traefik.expose=true"
     restart: always
-   
+
   jobs:
     image: reportportal/service-jobs:5.7.4
     depends_on:
@@ -292,7 +292,7 @@ services:
       ## Ref: https://reportportal.io/blog/double-entry-in-5.7.2
       RP_ELASTICSEARCH_HOST: http://elasticsearch:9200
       RP_ELASTICSEARCH_USERNAME: elastic
-      RP_ELASTICSEARCH_PASSWORD:  elastic1q2w3e
+      RP_ELASTICSEARCH_PASSWORD: elasticrpisat
       RP_DB_HOST: ${DB_HOST}
       RP_DB_USER: ${DATABASE_USER}
       RP_DB_PASS: ${DATABASE_PASSWORD}
@@ -307,7 +307,7 @@ services:
       DATASTORE_TYPE: minio
       DATASTORE_MINIO_ENDPOINT: http://minio:9000
       DATASTORE_MINIO_ACCESSKEY: minio
-      DATASTORE_MINIO_SECRETKEY: minio123
+      DATASTORE_MINIO_SECRETKEY: miniorpisat
       RP_ENVIRONMENT_VARIABLE_CLEAN_ATTACHMENT_CRON: 0 0 */24 * * *
       RP_ENVIRONMENT_VARIABLE_CLEAN_LOG_CRON: 0 0 */24 * * *
       RP_ENVIRONMENT_VARIABLE_CLEAN_LAUNCH_CRON: 0 0 */24 * * *
@@ -352,10 +352,10 @@ services:
       # - minio:/data
     environment:
       MINIO_ACCESS_KEY: minio
-      MINIO_SECRET_KEY: minio123
+      MINIO_SECRET_KEY: miniorpisat
     command: server /data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 30s
       timeout: 20s
       retries: 3
