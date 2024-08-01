@@ -205,8 +205,8 @@ services:
       RP_BINARYSTORE_MINIO_ACCESSKEY: minio
       RP_BINARYSTORE_MINIO_SECRETKEY: miniorpisat
       RP_SESSION_LIVE: 86400 #in seconds
-      RP_DATASOURCE_MAXIMUMPOOLSIZE: 100
-      RP_ENVIRONMENT_VARIABLE_EXECUTOR_POOL_SAVE_LOGS_MAX: 75
+      RP_DATASOURCE_MAXIMUMPOOLSIZE: 200
+      RP_ENVIRONMENT_VARIABLE_EXECUTOR_POOL_SAVE_LOGS_MAX: 150
     labels:
       - "traefik.http.middlewares.uat-strip-prefix.stripprefix.prefixes=/uat"
       - "traefik.http.routers.uat.middlewares=uat-strip-prefix@docker"
@@ -269,8 +269,8 @@ services:
       LOGGING_LEVEL_ORG_HIBERNATE_SQL: info
       RP_REQUESTLOGGING: false
       MANAGEMENT_HEALTH_ELASTICSEARCH_ENABLED: false
-      RP_DATASOURCE_MAXIMUMPOOLSIZE: 100
-      RP_ENVIRONMENT_VARIABLE_EXECUTOR_POOL_SAVE_LOGS_MAX: 75
+      RP_DATASOURCE_MAXIMUMPOOLSIZE: 200
+      RP_ENVIRONMENT_VARIABLE_EXECUTOR_POOL_SAVE_LOGS_MAX: 150
       JAVA_OPTS: -Xmx1g -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp  -Dcom.sun.management.jmxremote.rmi.port=12349 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false  -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=0.0.0.0
     labels:
       - "traefik.http.middlewares.api-strip-prefix.stripprefix.prefixes=/api"
